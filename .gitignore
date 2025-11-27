@@ -170,3 +170,5 @@ data/*/*
 # Model files (keep structure with .gitkeep)
 models/*
 !models/.gitkeep
+outputs/*
+!outputs/.gitkeep
