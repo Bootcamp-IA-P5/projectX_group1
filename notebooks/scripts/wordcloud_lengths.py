@@ -180,8 +180,12 @@ def main(args):
     os.makedirs(os.path.join(args.output, "wordclouds"), exist_ok=True)
     os.makedirs(os.path.join(args.output, "plots"), exist_ok=True)
 
+    # Validar sample_frac
+    if args.sample_frac <= 0 or args.sample_frac > 1:
+        raise ValueError(f"--sample-frac debe estar entre 0 y 1, recibido: {args.sample_frac}")
+
     # Muestra opcional
-    if args.sample_frac and 0 < args.sample_frac < 1:
+    if args.sample_frac < 1:
         df = df.sample(frac=args.sample_frac, random_state=42)
         print(f"Usando muestra aleatoria: {len(df)} filas (frac={args.sample_frac})")
 
