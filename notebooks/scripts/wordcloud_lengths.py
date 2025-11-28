@@ -103,6 +103,7 @@ def clean_text(text, nlp, stopwords_set):
     text = re.sub(r'http\S+|www\.\S+', '', text)
     text = re.sub(r'@\w+|#\w+', '', text)
     # Reemplazar caracteres no alfabéticos (conservamos letras acentuadas y números si quieres)
+    # Solo se necesitan letras minúsculas porque el texto ya fue convertido a minúsculas arriba (text.lower())
     text = re.sub(r'[^a-záéíóúüñ0-9\s]', ' ', text)
     # Tokenizar y lematizar
     doc = nlp(text)
