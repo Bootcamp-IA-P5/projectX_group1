@@ -187,7 +187,7 @@ def main(args):
 
     # Preprocesar
     print("Preprocesando textos (esto usa spaCy y puede tardar)...")
-    df["clean_text"] = df[args.text_col].astype(str).map(lambda t: clean_text(t, nlp, stopwords_set))
+    df["clean_text"] = df[args.text_col].map(lambda t: clean_text(t, nlp, stopwords_set))
 
     # Wordcloud general
     print("Generando wordcloud general...")
