@@ -76,7 +76,7 @@ def get_stopwords_for_lang(lang):
     Devuelve un set de stopwords para el idioma seleccionado (NLTK).
     Añade tokens extra comunes.
     """
-    ensure_nltk_resources()
+    ensure_nltk_resources(lang)
     if lang.startswith("en"):
         sw = set(stopwords.words("english"))
         extra = {"rt", "https", "http", "amp", "u", "im", "dont", "cant"}
