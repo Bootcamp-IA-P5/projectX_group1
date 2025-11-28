@@ -161,6 +161,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# MacOS files
+.DS_Store
 # Data files (keep structure with .gitkeep)
 data/*
 !data/.gitkeep
