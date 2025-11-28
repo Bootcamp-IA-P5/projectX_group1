@@ -33,20 +33,21 @@ from nltk.corpus import stopwords
 # Helpers y carga de recursos
 # ---------------------------
 
-def ensure_nltk_resources(lang="english"):
+def ensure_nltk_resources(lang="en"):
     """
-    Asegura que las stopwords de NLTK estén descargadas.
-    Se ejecuta la primera vez que uses el script.
+    Asegura que las stopwords de NLTK estén descargadas para el idioma especificado.
+
+    Parámetros:
+        lang (str): Código de idioma, 'en' para inglés o 'es' para español. Por defecto 'en'.
     """
-    # Determina el idioma de stopwords según el parámetro lang
-    language = "spanish" if str(lang).lower().startswith("es") else "english"
+    # Mapea el código de idioma a los nombres de NLTK
+    nltk_language = "spanish" if str(lang).lower().startswith("es") else "english"
     try:
-        stopwords.words(language)
+        stopwords.words(nltk_language)
     except LookupError:
-        print(f"Descargando recursos NLTK (stopwords para {language})...")
+        print(f"Descargando recursos NLTK (stopwords para {nltk_language})...")
         nltk.download('stopwords')
         nltk.download('punkt')
-
 def load_spacy_model(lang):
     """
     Carga un modelo spaCy según el idioma solicitado.
