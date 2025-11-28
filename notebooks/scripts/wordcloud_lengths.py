@@ -33,15 +33,17 @@ from nltk.corpus import stopwords
 # Helpers y carga de recursos
 # ---------------------------
 
-def ensure_nltk_resources():
+def ensure_nltk_resources(lang="english"):
     """
     Asegura que las stopwords de NLTK estén descargadas.
     Se ejecuta la primera vez que uses el script.
     """
+    # Determina el idioma de stopwords según el parámetro lang
+    language = "spanish" if str(lang).lower().startswith("es") else "english"
     try:
-        stopwords.words("english")
+        stopwords.words(language)
     except LookupError:
-        print("Descargando recursos NLTK (stopwords)...")
+        print(f"Descargando recursos NLTK (stopwords para {language})...")
         nltk.download('stopwords')
         nltk.download('punkt')
 
