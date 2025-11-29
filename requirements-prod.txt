@@ -1,0 +1,6 @@
+fastapi==0.95.2
+uvicorn[standard]==0.22.0
+pydantic==1.10.11
+# Añade aquí transformers, torch, spacy solo si vas a usarlos en la imagen:
+# transformers==4.35.0
+# torch==2.2.0
