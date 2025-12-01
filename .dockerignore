@@ -1,0 +1,19 @@
+# Ignorar virtualenv, caches y archivos pesados
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.envrc
+.git
+.gitignore
+.github
+/data
+data/*
+outputs*
+models/*
+notebooks/*
+.DS_Store
