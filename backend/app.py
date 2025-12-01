@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
@@ -29,6 +29,12 @@ async def health():
 
 @app.post("/predict", response_model=PredictionOut)
 async def predict(payload: TextIn):
-    # predict_text debe devolver (label, score)
-    label, score = predict_text(payload.text)
-    return {"label": label, "score": score}
+    if not payload.text or not payload.text.strip():
+        raise HTTPException(status_code=400, detail="Text cannot be empty")
+    if len(payload.text) > 10000:
+        raise HTTPException(status_code=400, detail="Text too long")
+    try:
+        label, score = predict_text(payload.text)
+        return {"label": label, "score": score}
+    except Exception:
+        raise HTTPException(status_code=500, detail="Prediction failed")
