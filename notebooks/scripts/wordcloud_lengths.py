@@ -19,19 +19,19 @@ import os
 import re
 from collections import Counter
 
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-from wordcloud import WordCloud
-
-import spacy
 import nltk
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import spacy
 from nltk.corpus import stopwords
+from wordcloud import WordCloud
 
 # ---------------------------
 # Helpers y carga de recursos
 # ---------------------------
+
 
 def ensure_nltk_resources(lang="en"):
     """
@@ -46,8 +46,10 @@ def ensure_nltk_resources(lang="en"):
         stopwords.words(nltk_language)
     except LookupError:
         print(f"Descargando recursos NLTK (stopwords para {nltk_language})...")
-        nltk.download('stopwords')
-        nltk.download('punkt')
+        nltk.download("stopwords")
+        nltk.download("punkt")
+
+
 def load_spacy_model(lang):
     """
     Carga un modelo spaCy según el idioma solicitado.
@@ -66,11 +68,15 @@ def load_spacy_model(lang):
         nlp = spacy.load(model_name)
         return nlp
     except OSError as e:
-        raise OSError(f"El modelo spaCy '{model_name}' no está instalado. Instálalo con:\npython -m spacy download {model_name}") from e
+        raise OSError(
+            f"El modelo spaCy '{model_name}' no está instalado. Instálalo con:\npython -m spacy download {model_name}"
+        ) from e
+
 
 # ---------------------------
 # Preprocesado de texto
 # ---------------------------
+
 
 def get_stopwords_for_lang(lang):
     """
@@ -87,6 +93,7 @@ def get_stopwords_for_lang(lang):
     sw |= extra
     return sw
 
+
 def clean_text(text, nlp, stopwords_set):
     """
     Limpia y lematiza texto:
@@ -101,10 +108,10 @@ def clean_text(text, nlp, stopwords_set):
     text = str(text)
     # Normalizar y eliminar URLs, menciones
     text = text.lower()
-    text = re.sub(r'http\S+|www\.\S+', '', text)
-    text = re.sub(r'@\w+|#\w+', '', text)
+    text = re.sub(r"http\S+|www\.\S+", "", text)
+    text = re.sub(r"@\w+|#\w+", "", text)
     # Reemplazar caracteres no alfabéticos (conservamos letras acentuadas y números si quieres)
-    text = re.sub(r'[^a-záéíóúüñ0-9\s]', ' ', text)
+    text = re.sub(r"[^a-záéíóúüñ0-9\s]", " ", text)
     # Tokenizar y lematizar
     doc = nlp(text)
     lemmas = []
@@ -120,11 +127,15 @@ def clean_text(text, nlp, stopwords_set):
         lemmas.append(lemma)
     return " ".join(lemmas)
 
+
 # ---------------------------
 # Visualizaciones / Export
 # ---------------------------
 
-def generate_wordcloud(text_series, output_path, max_words=200, background_color="white"):
+
+def generate_wordcloud(
+    text_series, output_path, max_words=200, background_color="white"
+):
     """
     Genera y guarda una wordcloud a partir de una Serie de pandas con textos limpios.
     """
@@ -132,11 +143,18 @@ def generate_wordcloud(text_series, output_path, max_words=200, background_color
     if not full_text.strip():
         print("No hay texto para generar wordcloud.")
         return
-    wc = WordCloud(width=1600, height=800, background_color=background_color,
-                   max_words=max_words, collocations=False, colormap="viridis")
+    wc = WordCloud(
+        width=1600,
+        height=800,
+        background_color=background_color,
+        max_words=max_words,
+        collocations=False,
+        colormap="viridis",
+    )
     wc.generate(full_text)
     wc.to_file(output_path)
     print(f"Wordcloud guardada en {output_path}")
+
 
 def plot_length_distributions(lengths, output_path_hist, output_path_box):
     """
@@ -162,15 +180,19 @@ def plot_length_distributions(lengths, output_path_hist, output_path_box):
     plt.savefig(output_path_box, dpi=150)
     plt.close()
 
+
 # ---------------------------
 # Main
 # ---------------------------
+
 
 def main(args):
     # Leer CSV
     df = pd.read_csv(args.input)
     if args.text_col not in df.columns:
-        raise ValueError(f"La columna '{args.text_col}' no está en el CSV. Columnas disponibles: {df.columns.tolist()}")
+        raise ValueError(
+            f"La columna '{args.text_col}' no está en el CSV. Columnas disponibles: {df.columns.tolist()}"
+        )
 
     # Cargar modelo spaCy según idioma
     nlp = load_spacy_model(args.lang)
@@ -188,7 +210,9 @@ def main(args):
 
     # Preprocesar
     print("Preprocesando textos (esto usa spaCy y puede tardar)...")
-    df["clean_text"] = df[args.text_col].map(lambda t: clean_text(t, nlp, stopwords_set))
+    df["clean_text"] = df[args.text_col].map(
+        lambda t: clean_text(t, nlp, stopwords_set)
+    )
 
     # Wordcloud general
     print("Generando wordcloud general...")
@@ -201,7 +225,11 @@ def main(args):
 
     # Graficas
     print("Generando gráficos de longitudes...")
-    plot_length_distributions(np.array(lengths), os.path.join(args.output, "plots", "lengths_hist.png"), os.path.join(args.output, "plots", "lengths_box.png"))
+    plot_length_distributions(
+        np.array(lengths),
+        os.path.join(args.output, "plots", "lengths_hist.png"),
+        os.path.join(args.output, "plots", "lengths_box.png"),
+    )
 
     # Top-k palabras
     print("Calculando top palabras...")
@@ -212,14 +240,28 @@ def main(args):
 
     print("Proceso completo. Archivos guardados en:", args.output)
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generar wordclouds y análisis de longitudes (soporta en/es).")
+    parser = argparse.ArgumentParser(
+        description="Generar wordclouds y análisis de longitudes (soporta en/es)."
+    )
     parser.add_argument("--input", required=True, help="Ruta al CSV de entrada")
-    parser.add_argument("--text-col", default="text", help="Nombre de la columna con texto (ej: 'Text')")
+    parser.add_argument(
+        "--text-col", default="text", help="Nombre de la columna con texto (ej: 'Text')"
+    )
     parser.add_argument("--output", default="outputs", help="Carpeta de salida")
-    parser.add_argument("--max-words", type=int, default=200, help="Máximo de palabras en la wordcloud")
-    parser.add_argument("--topk", type=int, default=50, help="Top K palabras a exportar")
-    parser.add_argument("--sample-frac", type=float, default=1.0, help="Fracción de la muestra para pruebas (entre 0 y 1)")
+    parser.add_argument(
+        "--max-words", type=int, default=200, help="Máximo de palabras en la wordcloud"
+    )
+    parser.add_argument(
+        "--topk", type=int, default=50, help="Top K palabras a exportar"
+    )
+    parser.add_argument(
+        "--sample-frac",
+        type=float,
+        default=1.0,
+        help="Fracción de la muestra para pruebas (entre 0 y 1)",
+    )
     parser.add_argument("--lang", default="en", help="Idioma del texto: 'en' o 'es'")
     args = parser.parse_args()
     main(args)
