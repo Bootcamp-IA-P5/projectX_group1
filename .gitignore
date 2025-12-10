@@ -173,7 +173,7 @@ data/*/*
 .DS_Store
 
 # Model files (keep structure with .gitkeep)
-models/*
-!models/.gitkeep
-outputs/*
-!outputs/.gitkeep
+#models/*
+#!models/.gitkeep
+#outputs/*
+#!outputs/.gitkeep
