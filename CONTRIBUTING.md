@@ -2,6 +2,12 @@
 
 Gracias por contribuir. Por favor sigue estas pautas para facilitar revisiones y calidad del proyecto.
 
+**Equipo del Proyecto:**
+- **Jimena** — Developer
+- **Ciprian** — Scrum Master
+- **Ignacio** — Product Owner
+- **Kasthlen** — Developer
+
 1. Flujo de trabajo
 - Crea una rama a partir de `dev` (o `main`) con un nombre descriptivo:
   - feat/mi-feature
