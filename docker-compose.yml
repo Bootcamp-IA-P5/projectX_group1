@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  # Servicio del modelo de IA
+  model:
+    build:
+      context: ./model
+      dockerfile: Dockerfile
+    image: projectx/model:latest
+    container_name: projectx-model
+    environment:
+      - MODEL_NAME=projectx-demo
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    networks:
+      - projectx-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8001/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Servicio del backend (API)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: projectx/backend:latest
+    container_name: projectx-backend
+    environment:
+      - MODEL_URL=http://model:8001
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    depends_on:
+      model:
+        condition: service_healthy
+    networks:
+      - projectx-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Servicio del frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: projectx/frontend:latest
+    container_name: projectx-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - projectx-network
+
+networks:
+  projectx-network:
+    driver: bridge
