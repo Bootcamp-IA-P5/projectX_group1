@@ -1,18 +1,18 @@
 # Frontend - React + Vite
 
-Frontend application for hate speech detection built with React, Vite, and modern web technologies.
+Interfaz moderna y responsiva para análisis de lenguaje de odio.
 
 ## 🚀 Quick Start
 
-### Development
+### Desarrollo
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+Abre [http://localhost:5173](http://localhost:5173)
 
-### Build for Production
+### Build
 ```bash
 npm run build
 npm run preview
@@ -21,21 +21,42 @@ npm run preview
 ### Docker
 ```bash
 docker build -t projectx-frontend .
-docker run -p 80:80 projectx-frontend
+docker run -p 8080:80 projectx-frontend
 ```
 
 ## 📦 Tech Stack
 
 - **React 19** - UI Library
 - **Vite** - Build tool & dev server
+- **Chart.js** - Gráficos interactivos
 - **Nginx** - Production server
-- **ESLint** - Code linting
+- **ESLint** - Linting
+
+## 🎨 Features
+
+- ✅ Análisis en tiempo real
+- ✅ Gráficos interactivos (Doughnut + Bar)
+- ✅ Diseño 100% responsivo
+- ✅ Validación de entrada
+- ✅ Manejo elegante de errores
+- ✅ Proxy automático al backend
+
+## 📡 API Integration
+
+Comunica con `/api/predict`:
+
+```javascript
+const response = await fetch('/api/predict', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ text: userInput })
+})
+```
 
 ## 🔧 Configuration
 
-Create a `.env` file (copy from `.env.example`):
-
-```bash
+Crear `.env` (opcional):
+```env
 VITE_API_URL=http://localhost:8000
 ```
 
@@ -44,36 +65,16 @@ VITE_API_URL=http://localhost:8000
 ```
 frontend/
 ├── src/
-│   ├── App.jsx          # Main application component
-│   ├── App.css          # Application styles
+│   ├── App.jsx          # Componente principal
+│   ├── App.css          # Estilos
 │   ├── index.css        # Global styles
 │   └── main.jsx         # Entry point
 ├── public/              # Static assets
-├── Dockerfile           # Docker configuration
-├── nginx.conf           # Nginx server config
+├── Dockerfile           # Multi-stage build
+├── nginx.conf           # Server config
 └── package.json         # Dependencies
 ```
 
-## 🎨 Features
+---
 
-- ✅ Real-time text analysis
-- ✅ Confidence score visualization
-- ✅ Probability bars for predictions
-- ✅ Responsive design
-- ✅ Error handling
-- ✅ Loading states
-
-## 🐳 Docker Deployment
-
-Multi-stage build for optimized production:
-- Build stage: Compiles React app
-- Production stage: Serves with Nginx
-
-## 📝 API Integration
-
-The frontend communicates with the backend API:
-- `POST /api/predict` - Analyze text for hate speech
-
-## 🤝 Contributing
-
-See main [CONTRIBUTING.md](../CONTRIBUTING.md)
+Made with ❤️ for Project X | Bootcamp IA P5

@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+# In Docker the working directory is /app (backend folder). Import locally.
+from infer import predict_text
 from pydantic import BaseModel
-
-from backend.infer import predict_text
 
 app = FastAPI(title="ProjectX - Hate Speech Detector (minimal backend)")
 
