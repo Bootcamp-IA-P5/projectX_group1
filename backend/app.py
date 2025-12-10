@@ -1,10 +1,20 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 from backend.infer import predict_text
 
 app = FastAPI(title="ProjectX - Hate Speech Detector (minimal backend)")
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify actual origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class TextIn(BaseModel):
@@ -35,6 +45,12 @@ async def predict(payload: TextIn):
         raise HTTPException(status_code=400, detail="Text too long")
     try:
         label, score = predict_text(payload.text)
-        return {"label": label, "score": score}
-    except Exception:
-        raise HTTPException(status_code=500, detail="Prediction failed")
+        return {
+            "label": label,
+            "score": score,
+            "prediction": label,
+            "confidence": score,
+            "probabilities": {label: score, "other": 1 - score},
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")

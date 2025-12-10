@@ -18,6 +18,25 @@ def predict_text(text: str) -> Tuple[str, float]:
         # data expected: {"label": "...", "score": 0.12}
         return data.get("label", "error"), float(data.get("score", 0.0))
     except Exception as e:
-        # Fallback sencillo (mantén comportamiento seguro)
-        print("Model server error:", e)
-        return "neutral", 0.0
+        # Fallback: análisis simple basado en palabras clave
+        print(f"Model server error: {e}. Using fallback prediction.")
+
+        # Lista simple de palabras de odio (expandir según necesidad)
+        hate_keywords = [
+            "odio",
+            "idiota",
+            "estúpido",
+            "tonto",
+            "hate",
+            "stupid",
+            "idiot",
+            "dumb",
+        ]
+
+        text_lower = text.lower()
+        has_hate_words = any(keyword in text_lower for keyword in hate_keywords)
+
+        if has_hate_words:
+            return "toxic", 0.75
+        else:
+            return "safe", 0.85
