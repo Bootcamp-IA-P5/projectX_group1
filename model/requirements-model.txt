@@ -1,7 +1,6 @@
 fastapi==0.95.2
 uvicorn[standard]==0.22.0
 pydantic==1.10.11
-requests==2.31.0
-# Añade aquí transformers, torch, spacy solo si vas a usarlos en la imagen:
+# Descomenta si vas a usar transformers/torch dentro del model image:
 # transformers==4.35.0
 # torch==2.2.0
