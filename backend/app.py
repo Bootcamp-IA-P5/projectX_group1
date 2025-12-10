@@ -48,9 +48,6 @@ async def predict(payload: TextIn):
         return {
             "label": label,
             "score": score,
-            "prediction": label,
-            "confidence": score,
-            "probabilities": {label: score, "other": 1 - score},
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
