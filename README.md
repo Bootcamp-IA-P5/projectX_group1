@@ -1,16 +1,15 @@
-# 🚀 Project X - Hate Speech Detection
+# 🛡️ Project X - Detección de Lenguaje de Odio
 
 <div align="center">
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![Pre-commit: enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-[![Docker Compose](https://img.shields.io/badge/docker--compose-enabled-blue?logo=docker)](https://docs.docker.com/compose/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com/)
+[![React 19](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://docs.docker.com/compose/)
 
-**Detección de Lenguaje de Odio (Hate Speech & Toxic Content Detection)**
+**Sistema de Clasificación de Textos para Detectar Lenguaje de Odio y Contenido Tóxico**
 
-[Gestión del Proyecto](https://github.com/orgs/Bootcamp-IA-P5/projects/21/views/1) • [Issues](https://github.com/Bootcamp-IA-P5/projectX_group1/issues) • [Contribuir](CONTRIBUTING.md)
+[Repositorio](https://github.com/Bootcamp-IA-P5/projectX_group1) • [Gestión](https://github.com/orgs/Bootcamp-IA-P5/projects/21/views/1) • [Contribuir](CONTRIBUTING.md)
 
 </div>
 
@@ -18,11 +17,17 @@
 
 ## 📋 Descripción
 
-Este proyecto desarrolla un sistema de **clasificación de textos para detectar lenguaje de odio y contenido tóxico** en español e inglés. Utiliza técnicas de **NLP modernas** (transformers, fine-tuning) con métrica principal **F1-score**.
+**Project X** es un detector inteligente de lenguaje de odio y contenido tóxico que funciona en **español e inglés**. 
 
-**Estado:** En desarrollo
-**Rama principal:** `dev`
-**Datos:** Datasets públicos como YouToxic y Spanish Hate Speech
+Combina:
+- 🔍 **Backend robusto** (FastAPI + clasificador keyword-based con contexto)
+- 🎨 **Frontend moderno** (React + Vite con gráficos interactivos)
+- 🐳 **Infraestructura containerizada** (Docker Compose)
+- ⚡ **API REST** con healthchecks y manejo de errores
+
+**Estado:** ✅ Producción (listo para entrega)
+**Rama:** `feat/react-frontend` → `dev`
+**Equipo:** Jimena, Ciprian, Ignacio, Kasthlen
 
 ---
 
@@ -85,230 +90,186 @@ projectX_group1/
 
 ## 🚀 Inicio Rápido
 
-### Requisitos Previos
-- **Python 3.10+**
-- **Docker & Docker Compose** (opcional, recomendado)
-- **Git**
-
-### Opción 1: Instalación Local
+### Opción 1: Docker Compose (Recomendado ⭐)
 
 ```bash
-# Clonar repositorio
 git clone https://github.com/Bootcamp-IA-P5/projectX_group1.git
 cd projectX_group1
 
-# Crear entorno virtual
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# Instalar dependencias
-pip install -r requirements.txt
-
-# Pre-commit hooks (recomendado)
-pip install pre-commit
-pre-commit install
-```
-
-### Opción 2: Docker Compose (Recomendado)
-
-```bash
-# Clonar repositorio
-git clone https://github.com/Bootcamp-IA-P5/projectX_group1.git
-cd projectX_group1
-
-# Iniciar servicios
 docker-compose up --build
-
-# Acceder a:
-# Frontend: http://localhost:8080
-# Backend API: http://localhost:8000
-# Model Service: http://localhost:8001
 ```
 
----
+Luego accede a:
+- **Frontend:** http://localhost:8080
+- **Backend API:** http://localhost:8000
+- **Model Service:** http://localhost:8001
 
-## 📊 Flujo de Trabajo
+### Opción 2: Desarrollo Local
 
-### 1. **Exploración de Datos (EDA)**
-```bash
-jupyter notebook notebooks/01_exploratory_data_analysis.ipynb
-```
-
-### 2. **Preprocesamiento**
-```bash
-python backend/train.py --mode preprocess --data-dir data/raw --output-dir data/processed
-```
-
-### 3. **Entrenamiento**
-```bash
-python backend/train.py \
-  --data-dir data/processed \
-  --output-dir models/exp1 \
-  --epochs 10 \
-  --batch-size 16
-```
-
-### 4. **Inferencia**
-```bash
-python backend/infer.py --model-path models/exp1 --text "Ejemplo de texto"
-```
-
-### 5. **API Local**
 ```bash
 # Backend
-cd backend && uvicorn app:app --host 0.0.0.0 --port 8000
+cd backend
+pip install -r requirements.txt
+uvicorn app:app --host 0.0.0.0 --port 8000
 
-# Model Service
-cd model && python app.py
+# Frontend (otra terminal)
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend en http://localhost:5173 con proxy automático al backend.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+projectX_group1/
+├── backend/
+│   ├── app.py                 # FastAPI + clasificador mejorado
+│   ├── infer.py               # Lógica de predicción
+│   ├── toxic_keywords.py      # Palabras tóxicas con pesos (ES/EN)
+│   ├── Dockerfile             # Imagen Docker
+│   └── requirements.txt        # Dependencias
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx            # Componente principal
+│   │   ├── App.css            # Estilos responsivos
+│   │   └── main.jsx           # Entry point
+│   ├── Dockerfile             # Build multi-stage + nginx
+│   ├── nginx.conf             # Servidor web
+│   ├── package.json           # Dependencias
+│   └── vite.config.js         # Proxy config
+│
+├── model/
+│   ├── app.py                 # Servicio de predicción
+│   ├── Dockerfile
+│   └── requirements-model.txt
+│
+├── docker-compose.yml         # Orquestación de servicios
+├── README.md                  # Este archivo
+├── DELIVERY.md                # Instrucciones de entrega
+├── CHECKLIST.md               # Validación final
+├── CONTRIBUTING.md            # Guía de contribución
+├── MODEL_CARD.md              # Especificaciones del modelo
+└── notebooks/                 # Análisis y EDA
 ```
 
 ---
 
-## 🐳 Docker Compose
+## ✨ Características
 
-Estructura de servicios aislados para mejor mantenibilidad:
+### 🔍 Análisis Inteligente
+- ✅ Detección de palabras tóxicas en español e inglés
+- ✅ Análisis de contexto (negaciones, bromas, expresiones de cariño)
+- ✅ Pesos de toxicidad personalizados (0.6 - 0.98)
+- ✅ Puntuaciones de confianza (0.0 - 1.0)
 
-| Servicio | Puerto | Descripción |
-|----------|--------|-------------|
-| **frontend** | 8080 | Interfaz de usuario |
-| **backend** | 8000 | API FastAPI |
-| **model** | 8001 | Servicio de modelo |
+### 🎨 Interfaz Moderna
+- ✅ Diseño responsivo y atractivo
+- ✅ Gráficos interactivos (Doughnut + Bar charts)
+- ✅ Validación en tiempo real
+- ✅ Manejo de errores elegante
 
-**Health Checks:** Todos los servicios incluyen verificaciones de salud automáticas.
+### 🐳 Infraestructura
+- ✅ Docker Compose con 3 servicios aislados
+- ✅ Health checks automáticos
+- ✅ CORS habilitado
+- ✅ Nginx como reverse proxy
+
+### 📊 API REST
 
 ```bash
-# Ver logs
-docker-compose logs -f backend
+POST /predict
+Content-Type: application/json
 
-# Detener servicios
-docker-compose down
+{
+  "text": "imbécil, no sabes cuanto te amo, daría mi vida por ti"
+}
+```
+
+**Respuesta:**
+```json
+{
+  "label": "safe",
+  "score": 0.31
+}
 ```
 
 ---
 
-## 💻 Desarrollo
+## 👥 Equipo
 
-### Formato de Código
+| Rol | Miembro |
+|-----|---------|
+| 🎯 Scrum Master | Ciprian |
+| 📊 Product Owner | Ignacio |
+| 💻 Developer | Jimena |
+| 💻 Developer | Kasthlen |
+
+---
+
+## 🧪 Testing
+
 ```bash
-# Black (formateador)
-black .
+# Health checks
+curl http://localhost:8000/health
+curl http://localhost:8001/health
 
-# isort (organizador de imports)
-isort .
+# Predicción
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text":"imbécil careculo"}'
+```
 
-# Pre-commit (automático)
+---
+
+## 📚 Documentación
+
+- **[DELIVERY.md](DELIVERY.md)** - Instrucciones de entrega final
+- **[CHECKLIST.md](CHECKLIST.md)** - Validaciones completadas
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guía de contribución
+- **[MODEL_CARD.md](MODEL_CARD.md)** - Especificaciones del modelo
+
+---
+
+## 🔧 Desarrollo
+
+### Pre-commit Hooks
+```bash
+pip install pre-commit
+pre-commit install
 pre-commit run --all-files
 ```
 
-### Tests
+### Formato de Código
 ```bash
-pip install pytest
-pytest tests/ -v
+black .
+isort .
 ```
 
-### Notebooks
-- ⚠️ Mantén los notebooks sin outputs (pre-commit los limpiará automáticamente)
-- 📌 Usa `nbstripout` para limpiar manualmente si es necesario
-
----
-
-## 📝 Contribuir
-
-Ver [CONTRIBUTING.md](CONTRIBUTING.md) para:
-- 🔄 Flujo de branching (feat/, fix/, chore/)
-- 📋 Convenciones de commits
-- 🔍 Proceso de Pull Requests
-- ✅ Checklist de calidad
-
-**Pasos rápidos:**
+### Commits
 ```bash
-git checkout -b feat/mi-feature dev
-# hacer cambios...
-git add .
 git commit -m "feat: descripción clara"
-git push origin feat/mi-feature
-# Abrir PR hacia dev
+# Convenciones: feat, fix, chore, docs
 ```
 
 ---
 
-## 📦 Dependencias
+## 🎯 Próximos Pasos
 
-**Principales:**
-- `transformers` - Modelos NLP pre-entrenados
-- `fastapi` - Framework para API
-- `torch` / `tensorflow` - Deep Learning
-- `pandas`, `numpy` - Procesamiento de datos
-- `scikit-learn` - Métricas y utilidades ML
-
-Ver `requirements.txt` y `requirements-prod.txt` para versiones exactas.
-
----
-
-## 📊 Model Card
-
-Ver [MODEL_CARD.md](MODEL_CARD.md) para:
-- 📈 Métricas de desempeño
-- ⚠️ Limitaciones y sesgos
-- 🔧 Cómo usar el modelo
-- 📋 Consideraciones éticas
-
----
-
-## ⚖️ Licencia
-
-[Especificar licencia del proyecto]
-
----
-
-## 📞 Contacto & Soporte
-
-- **GitHub Issues:** [Reportar bugs](https://github.com/Bootcamp-IA-P5/projectX_group1/issues)
-- **Discussions:** [Preguntas y sugerencias](https://github.com/Bootcamp-IA-P5/projectX_group1/discussions)
-
----
-
-## 🎯 Hoja de Ruta
-
-- [ ] Finalizar EDA y preprocesamiento
-- [ ] Entrenar modelo base
-- [ ] Implementar API backend
-- [ ] Desarrollar interfaz frontend
-- [ ] Evaluación y optimización
-- [ ] Documentación final
-- [ ] Deployment en producción
+- [ ] Integración con modelo ML real (BERT, DistilBERT)
+- [ ] Tests automatizados (pytest)
+- [ ] CI/CD en GitHub Actions
+- [ ] Deployment en servidor producción
+- [ ] Monitoreo y métricas
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by Group 1 | Bootcamp IA P5**
+**Hecho con ❤️ por Grupo 1 | Bootcamp IA P5**
 
-</div>
-
-Evaluar:
-```bash
-python backend/evaluate.py --model models/exp1 --data data/processed/test.csv --out outputs/metrics.json
-```
-
-Docker y despliegue
--------------------
-(Por confirmar)
-
-Buenas prácticas y ética
------------------------
-- Revisar sesgos en los datos y posibles falsos positivos.
-- No usar el modelo en decisiones críticas sin revisión humana.
-- Mantener un MODEL_CARD con limitaciones y responsabilidad.
-
-Contribuciones
--------------
-Lee CONTRIBUTING.md para normas de contribución y hooks (pre-commit).
-
-Licencia
---------
-Añade aquí la licencia del proyecto (p. ej. MIT).
-
-Contacto
---------
-- Responsable del proyecto: correo@ejemplo.com
+[GitHub](https://github.com/Bootcamp-IA-P5/projectX_group1) • [Project Board](https://github.com/orgs/Bootcamp-IA-P5/projects/21)
