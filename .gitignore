@@ -169,8 +169,11 @@ data/*
 !data/*/
 data/*/*
 
+#macOS files
+.DS_Store
+
 # Model files (keep structure with .gitkeep)
-models/*
-!models/.gitkeep
-outputs/*
-!outputs/.gitkeep
+#models/*
+#!models/.gitkeep
+#outputs/*
+#!outputs/.gitkeep
