@@ -1,6 +1,18 @@
 import json
+import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
+
+try:
+    from backend.toxic_keywords import (ALL_TOXIC_PATTERNS,
+                                        MULTIPLE_MATCHES_BONUS,
+                                        SAFE_CONTEXT_PATTERNS,
+                                        SAFE_CONTEXT_REDUCTION,
+                                        TOXICITY_THRESHOLD)
+except ImportError:
+    from toxic_keywords import (ALL_TOXIC_PATTERNS, MULTIPLE_MATCHES_BONUS,
+                                SAFE_CONTEXT_PATTERNS, SAFE_CONTEXT_REDUCTION,
+                                TOXICITY_THRESHOLD)
 
 
 class HateSpeechHandler(BaseHTTPRequestHandler):
@@ -62,43 +74,53 @@ class HateSpeechHandler(BaseHTTPRequestHandler):
                     self.wfile.write(json.dumps(response).encode())
                     return
 
-                # Simple keyword-based classifier
-                hate_keywords = [
-                    "odio",
-                    "idiota",
-                    "estúpido",
-                    "tonto",
-                    "imbécil",
-                    "pendejo",
-                    "mierda",
-                    "hate",
-                    "stupid",
-                    "idiot",
-                    "dumb",
-                    "moron",
-                    "trash",
-                    "garbage",
-                    "kill",
-                ]
-
+                # Enhanced keyword-based classifier with scoring
                 text_lower = text.lower()
-                has_hate_words = any(keyword in text_lower for keyword in hate_keywords)
 
-                if has_hate_words:
+                # Calculate toxicity score
+                max_toxicity = 0.0
+                matches_found = []
+
+                for pattern, weight in ALL_TOXIC_PATTERNS.items():
+                    if re.search(pattern, text_lower, re.IGNORECASE):
+                        max_toxicity = max(max_toxicity, weight)
+                        matches_found.append(pattern)
+
+                # Check for safe context
+                has_safe_context = any(
+                    re.search(ctx, text_lower, re.IGNORECASE)
+                    for ctx in SAFE_CONTEXT_PATTERNS
+                )
+
+                # Adjust score based on context
+                if has_safe_context and max_toxicity > 0:
+                    max_toxicity *= SAFE_CONTEXT_REDUCTION
+
+                # Multiple toxic words increase confidence
+                if len(matches_found) > 1:
+                    max_toxicity = min(0.99, max_toxicity + MULTIPLE_MATCHES_BONUS)
+
+                # Determine label and confidence
+                if max_toxicity >= TOXICITY_THRESHOLD:
                     label = "toxic"
-                    score = 0.75
+                    score = max_toxicity
                 else:
                     label = "safe"
-                    score = 0.85
+                    score = max(0.7, 1.0 - max_toxicity)
 
                 response = {
                     "label": label,
-                    "score": score,
+                    "score": round(score, 4),
                     "prediction": label,
-                    "confidence": score,
-                    "probabilities": {label: score, "other": 1 - score},
+                    "confidence": round(score, 4),
+                    "probabilities": {
+                        label: round(score, 4),
+                        "other": round(1 - score, 4),
+                    },
                     "text_length": len(text),
-                    "model": "fallback_keyword_classifier",
+                    "model": "enhanced_keyword_classifier_v2",
+                    "matches_count": len(matches_found),
+                    "safe_context_detected": has_safe_context,
                 }
 
                 self.send_response(200)
