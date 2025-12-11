@@ -1,0 +1,34 @@
+Fase,Componente,Tarea,Estado,Responsable,Fecha Inicio,Fecha Fin,% Completado,Observaciones
+Análisis,EDA,Exploración de datos YouToxic,Completado,Jimena,2025-11-15,2025-11-22,100%,Análisis de 1000 comentarios
+Análisis,EDA,Exploración de datos Spanish,Completado,Kasthlen,2025-11-15,2025-11-25,100%,Dataset en español procesado
+Análisis,Estadísticas,Distribución de clases,Completado,Ignacio,2025-11-20,2025-11-26,100%,462 tóxicos vs 538 seguros
+Preprocesamiento,Limpieza,Normalización de texto,Completado,Jimena,2025-11-22,2025-11-28,100%,Minúsculas y remover caracteres especiales
+Preprocesamiento,Lemmatización,Tokenización con spaCy,Completado,Kasthlen,2025-11-25,2025-12-01,100%,Idiomas ES/EN soportados
+Preprocesamiento,Validación,Dataset procesado guardado,Completado,Ignacio,2025-11-28,2025-12-02,100%,Archivos en data/processed/
+Modelo,Desarrollo,Clasificador keyword-based,Completado,Jimena,2025-12-01,2025-12-05,100%,Pesos de 0.6-0.98
+Modelo,Mejora,Detección de contexto,Completado,Kasthlen,2025-12-03,2025-12-07,100%,Reduce toxicidad con contexto afectuoso
+Modelo,Testing,Validación de predicciones,Completado,Ciprian,2025-12-05,2025-12-08,100%,Casos positivos y negativos testeados
+Backend,API,FastAPI implementation,Completado,Jimena,2025-12-02,2025-12-06,100%,Endpoints /predict y /health
+Backend,Documentación,API spec y ejemplos,Completado,Ignacio,2025-12-04,2025-12-08,100%,Documentación en código
+Backend,Docker,Dockerfile y requirements,Completado,Kasthlen,2025-12-05,2025-12-08,100%,Multi-stage build optimizado
+Frontend,UI,Componente principal React,Completado,Jimena,2025-12-03,2025-12-07,100%,App.jsx con validación
+Frontend,Gráficos,Implementación Chart.js,Completado,Kasthlen,2025-12-05,2025-12-08,100%,Doughnut y Bar charts
+Frontend,Estilos,Responsive design CSS,Completado,Ignacio,2025-12-04,2025-12-09,100%,Mobile-first approach
+Frontend,Docker,Nginx + multi-stage build,Completado,Ciprian,2025-12-06,2025-12-09,100%,Build optimizado
+Infraestructura,Docker,docker-compose setup,Completado,Ciprian,2025-12-04,2025-12-08,100%,3 servicios aislados
+Infraestructura,Networking,Health checks y CORS,Completado,Jimena,2025-12-06,2025-12-09,100%,Todos los servicios saludables
+Infraestructura,Git,Control de versiones,Completado,Ignacio,2025-12-01,2025-12-10,100%,Rama feat/react-frontend
+Documentación,README,Guía principal actualizada,Completado,Kasthlen,2025-12-08,2025-12-10,100%,Con ejemplos de uso
+Documentación,DELIVERY,Instrucciones de entrega,Completado,Jimena,2025-12-08,2025-12-10,100%,Equipo y estado final
+Documentación,CHECKLIST,Validaciones completadas,Completado,Ignacio,2025-12-08,2025-12-10,100%,Todos items verificados
+Documentación,MODEL_CARD,Especificaciones técnicas,Completado,Ciprian,2025-12-07,2025-12-10,100%,Limitaciones y uso
+Documentación,CONTRIBUTING,Guía para contribuir,Completado,Kasthlen,2025-12-05,2025-12-08,100%,Equipo actualizado
+Limpieza,Código,Remover archivos obsoletos,Completado,Jimena,2025-12-10,2025-12-10,100%,server.py app_simple.py eliminados
+Limpieza,Testing,Validación final,Completado,Ciprian,2025-12-10,2025-12-10,100%,Todos servicios healthy
+QA,Funcionalidad,Backend corriendo en 8000,Completado,Jimena,2025-12-10,2025-12-10,100%,API respondiendo correctamente
+QA,Funcionalidad,Frontend en 8080,Completado,Kasthlen,2025-12-10,2025-12-10,100%,UI cargando y respondiendo
+QA,Funcionalidad,Modelo en 8001,Completado,Ignacio,2025-12-10,2025-12-10,100%,Predicciones funcionando
+QA,Integración,Docker Compose funcional,Completado,Ciprian,2025-12-10,2025-12-10,100%,docker-compose up --build exitoso
+Entrega,Preparación,Código limpio y documentado,Completado,Todos,2025-12-10,2025-12-10,100%,Listo para presentación
+Entrega,Git,Commits pusheados,Completado,Ignacio,2025-12-10,2025-12-10,100%,feat/react-frontend actualizado
+Entrega,Validación,Rúbrica de evaluación,En Revisión,Todos,2025-12-11,2025-12-11,95%,Cumpliendo requisitos mínimos

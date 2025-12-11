@@ -21,8 +21,6 @@ notebooks/
 data/
 data/*
 !data/.gitkeep
-models/
-!models/.gitkeep
 outputs*/
 !outputs/.gitkeep
 

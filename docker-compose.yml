@@ -26,8 +26,8 @@ services:
   # Servicio del backend (API)
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     image: projectx/backend:latest
     container_name: projectx-backend
     environment:
