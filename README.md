@@ -9,7 +9,7 @@
 
 **Sistema de Clasificación de Textos para Detectar Lenguaje de Odio y Contenido Tóxico**
 
-[Repositorio](https://github.com/Bootcamp-IA-P5/projectX_group1) • [Gestión](https://github.com/orgs/Bootcamp-IA-P5/projects/21/views/1) • [Contribuir](CONTRIBUTING.md)
+[Repositorio](https://github.com/Bootcamp-IA-P5/projectX_group1) • [Gestión](https://github.com/orgs/Bootcamp-IA-P5/projects/21/views/1) • [Contribuir](CONTRIBUTING.md)  •  [Presentación](https://gamma.app/docs/Proyecto-X-Radar-de-Toxicidad-zlvqwn7tlgxxqbj?mode=doc)
 
 </div>
 
